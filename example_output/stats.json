@@ -1,0 +1,22 @@
+{
+  "clean.pcap": {
+    "malicious_packets_count": 0,
+    "packets_count": 4956
+  },
+  "dnsex_dump.pcap": {
+    "malicious_packets_count": 20791,
+    "packets_count": 25076
+  },
+  "iodinet_dump1.pcap": {
+    "malicious_packets_count": 279226,
+    "packets_count": 340540
+  },
+  "iodintet_dump2.pcap": {
+    "malicious_packets_count": 32847,
+    "packets_count": 41308
+  },
+  "packets_per_second": 20670.0,
+  "total_malicious_packets": 332864,
+  "total_packets": 411880,
+  "total_time": 19.926
+}

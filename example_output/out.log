@@ -1,0 +1,8 @@
+2020-08-18 18:21:23,427:DEBUG:143:Started pcap parsing
+2020-08-18 18:21:25,166:INFO:135:clean.pcap analysis finished. Total malicious  packets found: 0
+2020-08-18 18:21:27,088:INFO:135:dnsex_dump.pcap analysis finished. Total malicious  packets found: 20791
+2020-08-18 18:21:27,590:INFO:135:iodintet_dump2.pcap analysis finished. Total malicious  packets found: 32847
+2020-08-18 18:21:43,308:INFO:135:iodinet_dump1.pcap analysis finished. Total malicious  packets found: 279226
+2020-08-18 18:21:43,353:DEBUG:154:all pcap files parsed, computing statistics...
+2020-08-18 18:21:43,358:DEBUG:166:statistics done, merging csv files...
+2020-08-18 18:21:44,209:INFO:179:Merging done, temp data cleaned successfully, job finished

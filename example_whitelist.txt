@@ -1,0 +1,2 @@
+*.cnn.com
+telemetry-ingestion.eu-frankfurt-1.oraclecloud.com
