@@ -16,7 +16,7 @@ from file_processors import get_pcaps, concat_cvs, delete_temp_csv, mark_pcap_as
 from whitelist import WhiteList
 
 config = configparser.ConfigParser()
-config.read('test_config.ini')
+config.read('config.ini')
 
 PCAP_DIR = config["files settings"]["pcap_dir"]
 OUTPUT_DIR = config["files settings"]["output_dir"]
