@@ -3,15 +3,35 @@ This is a simple DNS tunneling detector written at [Fintech & Security Superhero
 <br>
 This code works on pure python 3.7 and uses some simple metrics to detect DNS tunnels (only HTTP traffic supported)
 
+### Installation
+* Clone this repository into your local directory
+* Set path to required directories in config.ini (you can use pcap_examples as pcap_dir) and optionally a path to whitelist
+* Go to your directory and run `pip install -r requirements.txt`
+
+Now you can run the code with just `python3 main.py`
+
 ### Working scheme
+The script consists of these simple steps:
+1. Traffic dumps are read from the input directory
+2. Every file is processed in parallel with dpkt library
+3. Each packet in the dump is checked according to filtration algorithm
+4. Results are written in the output directory (CSV) alongside with log file and stats (JSON)
+
+> note that to benefit the most from python multiprocessing, traffic dumps 
+> should be approximately one size 
 <br>
 
 ![](https://storage.geekclass.ru/images/21abe9fb-aaf0-4523-882f-4dd06c803da2.png)
 
 ### Filtration algorithm
+Filtration algorithm uses simple criteria which are presented in the picture below:
+
 ![](https://storage.geekclass.ru/images/b6e0eea7-5a92-431d-bfa9-4ca1e451b71e.png)
+Note that result csv will have such headers:
+`pcap_name | packet_number | probability(100%, high, medium, low(?)) | reason`
 
 ### TODO
+* add option to disable already parsed files
 * Add some statistical analysis
 * Apply machine learning to find most suitable detection criteria
 * Rewrite in C++ for better speed
