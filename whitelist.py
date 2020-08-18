@@ -1,6 +1,3 @@
-import sys
-
-
 class WhiteList:
     def __init__(self, filename: str):
         self._whitelist = dict()
@@ -10,7 +7,7 @@ class WhiteList:
 
         if not self._domains:
             print("Please provide some domains in whitelist or disable it in config.ini")
-            sys.exit(1)
+            raise ValueError
 
         self.parse()
 
@@ -23,7 +20,7 @@ class WhiteList:
                 t = self.nested_dict(domain, "*")
             else:
                 t = self.nested_dict(domain, -1)
-            key = list(t.keys())[0]
+            key = next(iter(t.keys()))
             if not t.get(key, False):
                 continue
             if not self._whitelist.get(key, False):
@@ -31,11 +28,11 @@ class WhiteList:
             else:
                 try:
                     self._whitelist[key].update(t.get(key))
-                except:
+                except IndexError:
                     pass
 
     def nested_dict(self, data: list, value) -> dict:
-        if len(data) is 1:
+        if len(data) == 1:
             return {data[0]: value}
         return {data[0]: self.nested_dict(data[1:], value)}
 
