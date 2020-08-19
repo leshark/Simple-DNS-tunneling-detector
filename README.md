@@ -36,6 +36,11 @@ Note that result csv will have such headers:
 * Apply machine learning to find most suitable detection criteria
 * Rewrite in C++ for better speed
 
+### Acknowledgments
+Special thanks to my hackathon teammates:
+* [archercreat](https://github.com/archercreat) - helped with code, whitelist implemetation
+* [RussianCatYakov](https://github.com/RussianCatYakov) - theoretical support, chekers selection
+
 ### Things to read 
 * H. (n.d.). IPoverDNS. Retrieved August 07, 2020, from https://sarwiki.informatik.hu-berlin.de/IPoverDNS
 * Yu, B., Smith, L., Threefoot, M., & Olumofin, F. (1970, January 01). [PDF] Behavior Analysis based DNS Tunneling Detection and Classification with Big Data Technologies: Semantic Scholar. Retrieved August 07, 2020, from https://www.semanticscholar.org/paper/Behavior-Analysis-based-DNS-Tunneling-Detection-and-Yu-Smith/b7bc7d2eb9c0f18b5e0e5da3cc6903acfe7c29fe
