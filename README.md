@@ -31,7 +31,7 @@ Note that result csv will have such headers:
 `pcap_name | packet_number | probability(100%, high, medium, low(?)) | reason`
 
 ### TODO
-* add option to disable already parsed files
+Current improvement steps are available [here](https://github.com/leshark/Simple-DNS-tunneling-detector/projects/1)
 * Add some statistical analysis
 * Apply machine learning to find most suitable detection criteria
 * Rewrite in C++ for better speed
