@@ -2,8 +2,14 @@ import glob
 import os
 
 
-def get_pcaps(directory):
-    return glob.glob(os.path.join(directory, "*.pcap*"))
+def get_pcaps(directory, ignore_parsed=True):
+    all_files = glob.glob(os.path.join(directory, "*.pcap*"))
+    parsed_files = glob.glob(os.path.join(directory, "*_parsed.pcap*"))
+
+    if ignore_parsed:
+        return set(all_files) - set(parsed_files)
+    else:
+        return all_files
 
 
 def get_temp_csv(directory):

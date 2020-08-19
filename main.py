@@ -25,6 +25,7 @@ PCAP_DIR = config["files settings"]["pcap_dir"]
 OUTPUT_DIR = config["files settings"]["output_dir"]
 WHITELIST_PATH = config["whitelist settings"]["whitelist"]
 
+IGNORE_PARSED_PCAPS = config["files settings"].getboolean("ignore_parsed_pcaps")
 WHITELIST_ENABLED = config["whitelist settings"].getboolean("enable_whitelist")
 
 OUT_LOG = os.path.join(OUTPUT_DIR, "out.log")
@@ -127,7 +128,10 @@ def main():
 
     logger.debug("Started pcap parsing")
 
-    pcaps = get_pcaps(PCAP_DIR)
+    pcaps = get_pcaps(PCAP_DIR, ignore_parsed=IGNORE_PARSED_PCAPS)
+    if not pcaps:
+        raise UserWarning("no traffic files found, set ignore_parsed_pcaps in config to false if you want to analyze "
+                          "already parsed files")
 
     # start with N workers for N task unless this exceeds current machine cpu count
     with ProcessPoolExecutor(max_workers=len(pcaps) if cpu_count() >= len(pcaps) else cpu_count()) as executor:
