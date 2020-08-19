@@ -1,13 +1,12 @@
 import configparser
 import csv
 import json
-import logging
 import logging.handlers
 import os
-import sys
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
-from multiprocessing import Manager, cpu_count
+from logging.config import fileConfig
+from multiprocessing import cpu_count
 
 import dpkt
 
@@ -18,25 +17,19 @@ from whitelist import WhiteList
 config = configparser.ConfigParser()
 config.read('config.ini')
 
+# read logger configuration from file
+fileConfig('logging_config.ini')
+logger = logging.getLogger()
+
 PCAP_DIR = config["files settings"]["pcap_dir"]
 OUTPUT_DIR = config["files settings"]["output_dir"]
-WHITELIST_PATH = config["files settings"]["whitelist"]
+WHITELIST_PATH = config["whitelist settings"]["whitelist"]
 
-WHITELIST_ENABLED = config["files settings"].getboolean("enable_whitelist")
-
-LOGGING_LEVEL = config["logging settings"]["logging_level"]
-LOGGING_MODE = config["logging settings"]["logging_mode"]
+WHITELIST_ENABLED = config["whitelist settings"].getboolean("enable_whitelist")
 
 OUT_LOG = os.path.join(OUTPUT_DIR, "out.log")
 OUT_STATS = os.path.join(OUTPUT_DIR, "stats.json")
 OUT_CSV = os.path.join(OUTPUT_DIR, "out.csv")
-
-LOG_FORMAT = '%(asctime)s:%(levelname)s:%(lineno)d:%(message)s'
-
-if LOGGING_MODE == "file":
-    logging.basicConfig(filename=OUT_LOG, level=LOGGING_LEVEL, format=LOG_FORMAT)
-elif LOGGING_MODE == "stdout":
-    logging.basicConfig(stream=sys.stdout, level=LOGGING_LEVEL, format=LOG_FORMAT)
 
 SESSION_STATS = {}
 
@@ -53,18 +46,12 @@ def compute_stats(results):
     SESSION_STATS["total_malicious_packets"] = total_malicious_packets
 
 
-def process_pcap(pcap_file, q):
+def process_pcap(pcap_file):
     total_packets = 0
     malicious_packets = 0
     pcap_filename = os.path.split(pcap_file)[1]
 
     whitelist = WhiteList(WHITELIST_PATH) if WHITELIST_ENABLED else None
-
-    # enable logging from different processes
-    qh = logging.handlers.QueueHandler(q)
-    root = logging.getLogger()
-    root.setLevel(logging.DEBUG)
-    root.addHandler(qh)
 
     temp_csv = os.path.join(OUTPUT_DIR, "temp_" + pcap_filename + ".csv")
     with open(pcap_file, "rb") as dump, open(temp_csv, 'a') as csvfile:
@@ -124,14 +111,13 @@ def process_pcap(pcap_file, q):
                 # packet is probably malformed so ignore it
                 continue
             except UnicodeDecodeError:
-                # save as pcap_name, packet_number, probability(100%, high, medium, low)
                 csv_writer.writerow(
                     [pcap_filename, total_packets + 1, "100%", "not utf-8 symbols detected"]
                 )
                 malicious_packets += 1
             finally:
                 total_packets += 1
-    logging.info("{} analysis finished. Total malicious  packets found: {}".format(pcap_filename, malicious_packets))
+    logger.info("{} analysis finished. Total malicious  packets found: {}".format(pcap_filename, malicious_packets))
     mark_pcap_as_read(pcap_file)
     return pcap_file, total_packets, malicious_packets
 
@@ -139,18 +125,17 @@ def process_pcap(pcap_file, q):
 def main():
     g_start = time.monotonic()
 
-    logging.debug("Started pcap parsing")
+    logger.debug("Started pcap parsing")
 
     pcaps = get_pcaps(PCAP_DIR)
 
     # start with N workers for N task unless this exceeds current machine cpu count
     with ProcessPoolExecutor(max_workers=len(pcaps) if cpu_count() >= len(pcaps) else cpu_count()) as executor:
         futures = []
-        queue = Manager().Queue(-1)
         for pcap in pcaps:
-            futures.append(executor.submit(process_pcap, pcap, queue))
+            futures.append(executor.submit(process_pcap, pcap))
 
-    logging.debug("all pcap files parsed, computing statistics...")
+    logger.debug("all pcap files parsed, computing statistics...")
 
     SESSION_STATS["total_time"] = round(time.monotonic() - g_start, 3)
 
@@ -162,19 +147,19 @@ def main():
     with open(OUT_STATS, "w") as stats:
         json.dump(SESSION_STATS, stats, indent=4, sort_keys=True)
 
-    logging.debug("statistics done, merging csv files...")
+    logger.debug("statistics done, merging csv files...")
 
 
 if __name__ == '__main__':
     try:
         main()
     except KeyboardInterrupt:
-        logging.info("Job manually stopped, cleaning temp data...")
+        logger.info("Job manually stopped, cleaning temp data...")
     except Exception as e:
         print("Exception occurred, see output log for details")
-        logging.exception(e)
+        logger.exception(e)
     finally:
         concat_cvs(OUT_CSV, OUTPUT_DIR)
-        logging.info("Merging done")
+        logger.info("Merging done")
         delete_temp_csv(OUTPUT_DIR)
-        logging.info("Temp data cleaned successfully, job finished")
+        logger.info("Temp data cleaned successfully, job finished")
