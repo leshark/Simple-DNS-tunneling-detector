@@ -16,7 +16,7 @@ def get_temp_csv(directory):
     return glob.glob(os.path.join(directory, "temp*.csv"))
 
 
-def concat_cvs(csv_path, temp_csv_directory):
+def concat_csv(csv_path, temp_csv_directory):
     with open(csv_path, "a") as res_csv:
         for temp_csv in get_temp_csv(temp_csv_directory):
             with open(temp_csv) as temp_file:

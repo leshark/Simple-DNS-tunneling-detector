@@ -11,7 +11,7 @@ from multiprocessing import cpu_count
 import dpkt
 
 from checkers import shannon_entropy, check_hex, check_bad_symbols
-from file_processors import get_pcaps, concat_cvs, delete_temp_csv, mark_pcap_as_read
+from file_processors import get_pcaps, concat_csv, delete_temp_csv, mark_pcap_as_read
 from whitelist import WhiteList
 
 config = configparser.ConfigParser()
@@ -163,7 +163,7 @@ if __name__ == '__main__':
         print("Exception occurred, see output log for details")
         logger.exception(e)
     finally:
-        concat_cvs(OUT_CSV, OUTPUT_DIR)
+        concat_csv(OUT_CSV, OUTPUT_DIR)
         logger.info("Merging done")
         delete_temp_csv(OUTPUT_DIR)
         logger.info("Temp data cleaned successfully, job finished")
