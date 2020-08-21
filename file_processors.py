@@ -7,7 +7,7 @@ def get_pcaps(directory, ignore_parsed=True):
     parsed_files = glob.glob(os.path.join(directory, "*_parsed.pcap*"))
 
     if ignore_parsed:
-        return set(all_files) - set(parsed_files)
+        return list(set(all_files) - set(parsed_files))
     else:
         return all_files
 
