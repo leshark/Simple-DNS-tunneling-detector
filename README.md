@@ -1,4 +1,10 @@
 # Simple-DNS-tunneling-detector
+[![Python 3.6](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/leshark/Simple-DNS-tunneling-detector/Python%20application)
+![GitHub repo size](https://img.shields.io/github/repo-size/leshark/Simple-DNS-tunneling-detector)
+![GitHub](https://img.shields.io/github/license/leshark/Simple-DNS-tunneling-detector)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
+
 This is a simple DNS tunneling detector written at [Fintech & Security Superhero hackathon](https://dshkazan.ru/finsec)
 <br>
 This code works on pure python 3.7 and uses some simple metrics to detect DNS tunnels (only HTTP traffic supported)
