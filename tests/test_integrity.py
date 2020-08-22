@@ -5,9 +5,8 @@ import os
 import unittest
 
 import jsonschema
-
-from file_processors import get_pcaps, concat_csv, delete_temp_csv
-from main import main
+from dns_detector.file_processors import get_pcaps, concat_csv, delete_temp_csv
+from dns_detector.main import main
 
 JSON_SCHEMA = {
     "$schema": "http://json-schema.org/draft-04/schema#",
