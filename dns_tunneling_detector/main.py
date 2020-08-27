@@ -10,15 +10,15 @@ from multiprocessing import cpu_count
 
 import dpkt
 
-from checkers import shannon_entropy, check_hex, check_bad_symbols
-from file_processors import get_pcaps, concat_csv, delete_temp_csv, mark_pcap_as_read
-from whitelist import WhiteList
+from dns_tunneling_detector.checkers import shannon_entropy, check_hex, check_bad_symbols
+from dns_tunneling_detector.file_processors import get_pcaps, concat_csv, delete_temp_csv, mark_pcap_as_read
+from dns_tunneling_detector.whitelist import WhiteList
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
 
 # read logger configuration from file
-fileConfig('logging_config.ini')
+fileConfig(os.path.join(os.path.dirname(__file__), 'logging_config.ini'))
 logger = logging.getLogger()
 
 PCAP_DIR = config["files settings"]["pcap_dir"]
