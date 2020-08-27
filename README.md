@@ -11,13 +11,14 @@ This code works on pure python 3.7 and uses some simple metrics to detect DNS tu
 
 ### Installation
 * Clone this repository into your local directory
+* Go to `your_directory/dns_tunneling_detecor`
 * Optionally set path to your directories or enable whitelist in config.ini
-* Go to your directory and run `pip install -r requirements.txt`
+* Run `pip install -r requirements.txt`
 
 Now you can run the code with just `python3 main.py`
 
 ### Installation with Docker
-complete first 2 steps of installation and then run the following:
+complete first 3 steps of installation and then run the following:
 ```
 docker build -t dns-detector .
 docker run -v $(pwd):/app dns-detector
