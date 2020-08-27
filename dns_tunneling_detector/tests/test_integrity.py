@@ -7,7 +7,6 @@ import unittest
 import jsonschema
 
 from dns_tunneling_detector.file_processors import get_pcaps, concat_csv, delete_temp_csv
-from dns_tunneling_detector.main import main
 
 JSON_SCHEMA = {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -88,15 +87,22 @@ class TestMain(unittest.TestCase):
     csv_path = os.path.join("example_output", "out.csv")
     log_path = os.path.join("example_output", "out.log")
 
+    pcap_dir = "pcap_examples"
+    output_dir = "example_output"
+
     @classmethod
     def setUpClass(cls):
+        # we need to change directory before importing main in order to relative file paths to work
+        os.chdir("dns_tunneling_detector")
+        from dns_tunneling_detector.main import main
+
         # check that input and output dirs exist
-        if not os.path.exists("pcap_examples") or not os.path.exists("example_output"):
+        if not os.path.exists(cls.pcap_dir) or not os.path.exists(cls.output_dir):
             raise unittest.SkipTest("Tests were skipped as no input/output directories presented")
 
         main()
-        concat_csv(cls.csv_path, "example_output")
-        delete_temp_csv("example_output")
+        concat_csv(cls.csv_path, cls.output_dir)
+        delete_temp_csv(cls.output_dir)
 
     def test_output_files_exist(self):
         """assert files exist in output folder"""
@@ -120,7 +126,7 @@ class TestMain(unittest.TestCase):
     @classmethod
     def tearDownClass(cls):
         # remove _parsed pcap postfix after main() run
-        pcaps = get_pcaps("pcap_examples", ignore_parsed=False)
+        pcaps = get_pcaps(cls.pcap_dir, ignore_parsed=False)
         for pcap in pcaps:
             path, filename = os.path.split(pcap)
             filename, ext = filename.rsplit(".", maxsplit=1)

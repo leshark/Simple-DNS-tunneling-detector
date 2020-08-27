@@ -15,10 +15,10 @@ from dns_tunneling_detector.file_processors import get_pcaps, concat_csv, delete
 from dns_tunneling_detector.whitelist import WhiteList
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read(os.path.join(os.path.dirname(__file__), 'config.ini'))
 
 # read logger configuration from file
-fileConfig('logging_config.ini')
+fileConfig(os.path.join(os.path.dirname(__file__), 'logging_config.ini'))
 logger = logging.getLogger()
 
 PCAP_DIR = config["files settings"]["pcap_dir"]

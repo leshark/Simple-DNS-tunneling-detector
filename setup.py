@@ -18,6 +18,9 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+    package_data={
+        "": ["pcap_examples", "example_output", "*.ini", "*.txt"],
+    },
     python_requires='>=3.7',
     install_requires=["dpkt", "jsonschema"]
 )
