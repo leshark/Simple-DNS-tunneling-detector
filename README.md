@@ -11,7 +11,7 @@ This code works on pure python 3.7 and uses some simple metrics to detect DNS tu
 
 ### Installation
 * Clone this repository into your local directory
-* Go to `your_directory/dns_tunneling_detecor`
+* Go to `your_directory/dns_tunneling_detector`
 * Optionally set path to your directories or enable whitelist in config.ini
 * Run `pip install -r requirements.txt`
 
