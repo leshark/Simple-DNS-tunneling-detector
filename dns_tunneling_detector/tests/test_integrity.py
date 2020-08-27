@@ -94,7 +94,7 @@ class TestMain(unittest.TestCase):
     def setUpClass(cls):
         # we need to change directory before importing main in order to relative file paths to work
         os.chdir("dns_tunneling_detector")
-        from dns_tunneling_detector.main import main
+        from dns_tunneling_detector.__main__ import main
 
         # check that input and output dirs exist
         if not os.path.exists(cls.pcap_dir) or not os.path.exists(cls.output_dir):
