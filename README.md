@@ -7,7 +7,7 @@
 
 This is a simple DNS tunneling detector written at [Fintech & Security Superhero hackathon](https://dshkazan.ru/finsec)
 <br>
-This code works on pure python 3.7 and uses some simple metrics to detect DNS tunnels (only HTTP traffic supported)
+This code works on pure Python 3.7 and uses some simple metrics to detect DNS tunnels (only HTTP traffic supported)
 
 ### Installation
 * Clone this repository into your local directory
@@ -18,15 +18,15 @@ This code works on pure python 3.7 and uses some simple metrics to detect DNS tu
 Now you can run the code with just `python3 __main__.py`
 
 ### Installation with Docker
-complete first 3 steps of installation and then run the following:
+complete the first 3 steps of installation and then run the following:
 ```
 docker build -t dns-detector .
 docker run -v $(pwd):/app dns-detector
 ```
-> remember to mount necessary directories (if you have changed them in config)
+> Remember to mount necessary directories (if you have changed them in config)
 
 ### Installation with pip
-* complete first 2 steps of installation
+* Complete first 2 steps of installation
 * Run `pip install -e .`
 * Go to `your_directory/dns_tunneling_detector`
 * Now you can simply do `python3 -m dns_tunneling_detector`
@@ -35,32 +35,34 @@ docker run -v $(pwd):/app dns-detector
 The script consists of these simple steps:
 1. Traffic dumps are read from the input directory
 2. Every file is processed in parallel with dpkt library
-3. Each packet in the dump is checked according to filtration algorithm
+3. Each packet in the dump is checked according to the filtration algorithm
 4. Results are written in the output directory (CSV) alongside with log file and stats (JSON)
 
-> note that to benefit the most from python multiprocessing, traffic dumps 
+> Note that to benefit the most from Python multiprocessing, traffic dumps 
 > should be approximately one size 
 <br>
 
 ![](https://storage.geekclass.ru/images/21abe9fb-aaf0-4523-882f-4dd06c803da2.png)
 
 ### Filtration algorithm
-Filtration algorithm uses simple criteria which are presented in the picture below:
+The filtration algorithm uses simple criteria which are presented in the picture below:
 
 ![](https://storage.geekclass.ru/images/b6e0eea7-5a92-431d-bfa9-4ca1e451b71e.png)
-Note that result csv will have such headers:
+Note that the result CSV will have such headers:
 `pcap_name | packet_number | probability(100%, high, medium, low(?)) | reason`
 
 ### TODO
 Current improvement steps are available [here](https://github.com/leshark/Simple-DNS-tunneling-detector/projects/1)
 * Add some statistical analysis
-* Apply machine learning to find most suitable detection criteria
+* Apply machine learning to find the most suitable detection criteria
 * Rewrite in C++ for better speed
+
+> My humble attempt to rewrite it in C++ is [here](https://gitlab.com/leshark/dns_tunneling_detector/-/tree/master?ref_type=heads)
 
 ### Acknowledgments
 Special thanks to my hackathon teammates:
-* [archercreat](https://github.com/archercreat) - helped with code, whitelist implemetation
-* [RussianCatYakov](https://github.com/RussianCatYakov) - theoretical support, chekers selection
+* [archercreat](https://github.com/archercreat) - helped with code, whitelist implementation
+* [RussianCatYakov](https://github.com/RussianCatYakov) - theoretical support, checkers selection
 
 ### Things to read 
 * H. (n.d.). IPoverDNS. Retrieved August 07, 2020, from https://sarwiki.informatik.hu-berlin.de/IPoverDNS
